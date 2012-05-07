@@ -278,6 +278,7 @@ int main(int argc, char *argv[])
 		{"transport", 1, 0, 'E'},
 		{"headers", 1, 0, 'j'},
 		{"src-addr", 1, 0, 'J'},
+		{"retrans-limit", 1, 0, 'k'},
 		{0, 0, 0, 0}
 	};
 #endif
@@ -285,7 +286,7 @@ int main(int argc, char *argv[])
 	file_b=uri_b=trace=lport=usrloc=flood=verbose=randtrash=trashchar = 0;
 	warning_ext=rand_rem=nonce_count=replace_b=invite=message = 0;
 	sleep_ms=empty_contact=nagios_warn=timing=outbound_proxy=symmetric = 0;
-	namebeg=nameend=maxforw= -1;
+	namebeg=nameend=maxforw=retrans_limit= -1;
 	numeric=via_ins=redirects=fix_crlf=processes = 1;
 	username=password=replace_str=hostname=contact_uri=mes_body = NULL;
 	con_dis=auth_username=from_uri=headers=srcaddr = NULL;
@@ -305,9 +306,9 @@ int main(int argc, char *argv[])
 
 	/* lots of command line switches to handle*/
 #ifdef HAVE_GETOPT_LONG
-	while ((c=getopt_long(argc, argv, "a:A:b:B:c:C:dD:e:E:f:Fg:GhH:iIj:J:l:Lm:MnNo:O:p:P:q:r:Rs:St:Tu:UvVwW:x:Xz:", l_opts, &option_index)) != EOF){
+	while ((c=getopt_long(argc, argv, "a:A:b:B:c:C:dD:e:E:f:Fg:GhH:iIj:J:k:l:Lm:MnNo:O:p:P:q:r:Rs:St:Tu:UvVwW:x:Xz:", l_opts, &option_index)) != EOF){
 #else
-	while ((c=getopt(argc, argv, "a:A:b:B:c:C:dD:e:E:f:Fg:GhH:iIj:J:l:Lm:MnNo:O:p:P:q:r:Rs:St:Tu:UvVwW:x:z:")) != EOF){
+	while ((c=getopt(argc, argv, "a:A:b:B:c:C:dD:e:E:f:Fg:GhH:iIj:J:k:l:Lm:MnNo:O:p:P:q:r:Rs:St:Tu:UvVwW:x:z:")) != EOF){
 #endif
 		switch(c){
 			case 'a':
@@ -472,6 +473,9 @@ int main(int argc, char *argv[])
 				break;
 			case 'J':
 				srcaddr=optarg;
+				break;
+			case 'k':
+				retrans_limit=str_to_int(optarg);
 				break;
 			case 'l':
 				lport=str_to_int(optarg);
